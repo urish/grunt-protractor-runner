@@ -8,6 +8,8 @@
 
 'use strict';
 
+var os = require('os');
+
 module.exports = function(grunt) {
 
   grunt.registerMultiTask('protractor', 'A grunt task to run protractor.', function() {
@@ -44,9 +46,11 @@ module.exports = function(grunt) {
     });
 
     var done = this.async();
+    var PROTRACTOR_CMD_WINDOWS = 'node_modules/.bin/protractor.cmd';
+    var PROTRACTOR_CMD_UNIX = './node_modules/protractor/bin/protractor';
     // Spawn protractor command
     grunt.util.spawn({
-        cmd: './node_modules/protractor/bin/protractor',
+        cmd: (os.platform() === 'win32') ? PROTRACTOR_CMD_WINDOWS : PROTRACTOR_CMD_UNIX,
         args: args,
         opts: {
           stdio:'inherit'
